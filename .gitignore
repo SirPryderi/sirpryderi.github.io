@@ -55,3 +55,9 @@ vendor
 _site
 .sass-cache
 .jekyll-metadata
+
+# Gatbsy
+node_modules/
+.cache/
+public
+src/gatsby-types.d.ts
