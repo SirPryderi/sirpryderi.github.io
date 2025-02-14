@@ -71,6 +71,8 @@ function addStarsToSky() {
   scene.add(starField)
 }
 
+// interactions
+
 let x = 0.5
 let y = 0.5
 
@@ -82,6 +84,13 @@ function onMouseMove(event: MouseEvent) {
   if (event.buttons !== 1) {
     return
   }
+}
+
+let scrollPercentage = 0
+window.addEventListener('scroll', onScroll, false)
+function onScroll() {
+  const scroll = window.scrollY
+  scrollPercentage = scroll / (document.body.scrollHeight - window.innerHeight)
 }
 
 function updateCameraToAlignMoon(camera: THREE.PerspectiveCamera, moon: THREE.Mesh) {
