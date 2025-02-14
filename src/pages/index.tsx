@@ -17,10 +17,19 @@ const Slide = styled.section`
   margin: 0 auto;
   justify-content: center;
   min-height: 100vh;
+
+  // responsive breakpoints
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    padding: 20px;
+  }
 `
 
 const Title = styled.div`
-  font-size: 6rem;
+  font-size: 5rem;
+  @media (max-width: 768px) {
+   font-size: 3rem;
+  }
 
   .name {
     font-weight: 600;
@@ -42,9 +51,7 @@ const IndexPage: React.FC<PageProps> = () => {
           </h1>
         </Title>
       </Slide>
-      <Slide>
-        Some content here
-      </Slide>
+      <Slide>Some content here</Slide>
       <CosmosScene />
     </Main>
   )
