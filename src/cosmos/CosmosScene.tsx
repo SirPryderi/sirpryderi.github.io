@@ -16,7 +16,7 @@ function CosmosScene() {
     mountRef.current!.appendChild(renderer.domElement);
 
     return () => {
-      mountRef.current!.removeChild(renderer.domElement);
+      mountRef.current?.removeChild(renderer.domElement);
     };
   }, []);
 
