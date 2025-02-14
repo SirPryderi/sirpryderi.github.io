@@ -1,6 +1,6 @@
 import * as React from "react"
 import "../cosmos/scene"
-import type { HeadFC, PageProps } from "gatsby"
+import { graphql, Link, type HeadFC, type PageProps } from "gatsby"
 import CosmosScene from "../cosmos/CosmosScene"
 import styled from "styled-components"
 
@@ -28,7 +28,7 @@ const Slide = styled.section`
 const Title = styled.div`
   font-size: 5rem;
   @media (max-width: 768px) {
-   font-size: 3rem;
+    font-size: 3rem;
   }
 
   .name {
@@ -40,7 +40,7 @@ const Title = styled.div`
   }
 `
 
-const IndexPage: React.FC<PageProps> = () => {
+const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
   return (
     <Main>
       <Slide>
@@ -51,11 +51,34 @@ const IndexPage: React.FC<PageProps> = () => {
           </h1>
         </Title>
       </Slide>
-      <Slide>Some content here</Slide>
+      <Slide>
+        {
+          data.allMdx.nodes.map(({ frontmatter }) => (
+            <div key={frontmatter!.slug}>
+              <Link to={`/projects${frontmatter!.slug}`}>
+                {frontmatter!.name}
+              </Link>
+            </div>
+          ))
+        }
+      </Slide>
       <CosmosScene />
     </Main>
   )
 }
+
+export const pageQuery = graphql`
+  query HomePage { 
+    allMdx {
+      nodes {
+        frontmatter {
+          name
+          slug
+        }
+      }
+    }
+  }
+`
 
 export default IndexPage
 
