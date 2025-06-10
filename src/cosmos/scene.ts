@@ -42,7 +42,7 @@ bumpTexture.anisotropy = 8
 bumpTexture.minFilter = THREE.LinearMipmapLinearFilter
 bumpTexture.magFilter = THREE.LinearFilter
 material.bumpMap = bumpTexture
-material.bumpScale = 0.2
+material.bumpScale = 0.25
 
 material.displacementMap = bumpTexture
 material.displacementMap.wrapS = THREE.RepeatWrapping
@@ -51,7 +51,7 @@ material.displacementScale = 2
 material.displacementBias = 1
 
 // Geometries
-const geometry = createAdaptiveGeometry();
+const geometry = createAdaptiveGeometry()
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
@@ -71,10 +71,10 @@ function createAdaptiveGeometry() {
   const pixelRatio = window.devicePixelRatio || 1
   const screenArea = window.innerWidth * window.innerHeight
   const scaleFactor = Math.sqrt(screenArea / (1920 * 1080)) * pixelRatio
-  
+
   const widthSegments = Math.min(widthSegmentMax, Math.max(widthSegmentMin, Math.floor(widthSegmentBase * scaleFactor)))
   const heightSegments = Math.min(heightSegmentMax, Math.max(heightSegmentMin, Math.floor(heightSegmentBase * scaleFactor)))
-  
+
   return new THREE.SphereGeometry(30, widthSegments, heightSegments)
 }
 
@@ -148,24 +148,29 @@ function updateCameraToAlignMoon(camera: THREE.PerspectiveCamera, moon: THREE.Me
 addStarsToSky()
 
 function animate() {
-  requestAnimationFrame(animate)
+  const handle = requestAnimationFrame(animate)
   mesh.rotation.y += 0.00005
 
   // add camera parallax
-  const parallaxRatio = 1.5
-  const parallaxSpeed = 0.05
-  camera.position.x = THREE.MathUtils.lerp(camera.position.x, (x - 0.5) * parallaxRatio, parallaxSpeed)
-  camera.position.y = THREE.MathUtils.lerp(camera.position.y, (-y + 0.5) * parallaxRatio, parallaxSpeed)
+  const parallaxRatio = 5
+  const parallaxSpeed = 0.005
+
+  const cameraPositionTarget = {
+    x: (x - 0.5) * parallaxRatio + scrollPercentage * 50,
+    y: (-y + 0.5) * parallaxRatio - scrollPercentage * 100
+  }
+
+  camera.position.x = THREE.MathUtils.lerp(camera.position.x, cameraPositionTarget.x, parallaxSpeed)
+  camera.position.y = THREE.MathUtils.lerp(camera.position.y, cameraPositionTarget.y, parallaxSpeed)
 
   // look at the mesh
   updateCameraToAlignMoon(camera, mesh)
   render()
+  return handle
 }
 
 function render() {
   renderer.render(scene, camera)
 }
 
-animate()
-
-export { renderer }
+export { renderer, animate }
