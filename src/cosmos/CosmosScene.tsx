@@ -1,26 +1,28 @@
-import React, { useRef, useEffect } from "react";
-import styled from "styled-components";
-import { renderer } from "./scene";
+import React, { useRef, useEffect } from "react"
+import styled from "styled-components"
+import { renderer, animate } from "./scene"
 
 const CanvasContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   z-index: -1;
-`;
+`
 
 function CosmosScene() {
-  const mountRef = useRef<HTMLDivElement>(null);
+  const mountRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    mountRef.current!.appendChild(renderer.domElement);
+    mountRef.current!.replaceChildren(renderer.domElement)
+    const handle = animate()
 
     return () => {
-      mountRef.current?.removeChild(renderer.domElement);
-    };
-  }, []);
+      cancelAnimationFrame(handle)
+      mountRef.current?.removeChild(renderer.domElement)
+    }
+  }, [])
 
-  return <CanvasContainer ref={mountRef} />;
+  return <CanvasContainer ref={mountRef} />
 }
 
-export default CosmosScene;
+export default CosmosScene
