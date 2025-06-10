@@ -94,7 +94,7 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
       </Slide>
 
       <Slide>
-        <h2>Projects</h2>
+        <h2 id="projects">Projects</h2>
         <ProjectsGrid>
           {data.allMdx.nodes.map(({ frontmatter }) => (
             <ProjectCard
