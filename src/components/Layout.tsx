@@ -1,8 +1,7 @@
 import * as React from "react"
-import "../cosmos/scene"
-import { graphql, Link, type HeadFC, type PageProps } from "gatsby"
-import CosmosScene from "../cosmos/CosmosScene"
 import styled from "styled-components"
+import CosmosScene from "../cosmos/CosmosScene"
+import "../cosmos/scene"
 
 const Main = styled.main`
   color: white;
@@ -17,18 +16,5 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     </Main>
   )
 }
-
-export const pageQuery = graphql`
-  query HomePage {
-    allMdx {
-      nodes {
-        frontmatter {
-          name
-          slug
-        }
-      }
-    }
-  }
-`
 
 export default Layout
