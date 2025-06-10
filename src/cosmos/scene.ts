@@ -18,19 +18,29 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 80
 
 // Renderer
-const renderer = new THREE.WebGLRenderer({ antialias: true })
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" })
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setClearColor(0x000000, 0)
+
+if (renderer.capabilities.isWebGL2) {
+  renderer.getContext().getExtension('EXT_texture_filter_anisotropic')
+}
+
+renderer.setPixelRatio(window.devicePixelRatio)
 
 // Materials
 const material = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 0 })
 
 const texture = new THREE.TextureLoader().load('assets/texture.png')
 texture.anisotropy = 8
+texture.minFilter = THREE.LinearMipmapLinearFilter
+texture.magFilter = THREE.LinearFilter
 material.map = texture
 
 const bumpTexture = new THREE.TextureLoader().load('assets/displacement.jpg')
 bumpTexture.anisotropy = 8
+bumpTexture.minFilter = THREE.LinearMipmapLinearFilter
+bumpTexture.magFilter = THREE.LinearFilter
 material.bumpMap = bumpTexture
 material.bumpScale = 0.2
 
@@ -41,7 +51,7 @@ material.displacementScale = 2
 material.displacementBias = 1
 
 // Geometries
-const geometry = new THREE.SphereGeometry(30, 64, 32)
+const geometry = createAdaptiveGeometry();
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
@@ -50,7 +60,22 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight
   camera.updateProjectionMatrix()
   renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setPixelRatio(window.devicePixelRatio)
   render()
+}
+
+function createAdaptiveGeometry() {
+  const widthSegmentMax = 512, widthSegmentBase = 256, widthSegmentMin = 64
+  const heightSegmentMax = 256, heightSegmentBase = 128, heightSegmentMin = 32
+
+  const pixelRatio = window.devicePixelRatio || 1
+  const screenArea = window.innerWidth * window.innerHeight
+  const scaleFactor = Math.sqrt(screenArea / (1920 * 1080)) * pixelRatio
+  
+  const widthSegments = Math.min(widthSegmentMax, Math.max(widthSegmentMin, Math.floor(widthSegmentBase * scaleFactor)))
+  const heightSegments = Math.min(heightSegmentMax, Math.max(heightSegmentMin, Math.floor(heightSegmentBase * scaleFactor)))
+  
+  return new THREE.SphereGeometry(30, widthSegments, heightSegments)
 }
 
 function addStarsToSky() {
