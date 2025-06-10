@@ -1,14 +1,12 @@
 import * as React from "react"
-import { graphql } from "gatsby"
+import { graphql, type PageProps } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
+import Breadcrumbs from "../../components/Breadcrumbs"
 import Layout from "../../components/Layout"
 import styled from "styled-components"
 import LayoutHead from "../../components/LayoutHead"
 
-type Props = {
-  data: Queries.ProjectQuery
-  children: React.ReactNode
-}
+type Props = PageProps<Queries.ProjectQuery>
 
 const Article = styled.article`
   max-width: 900px;
@@ -33,11 +31,19 @@ const ProjectTitle = styled.h1`
   }
 `
 
-export default function ProjectTemplate({ data, children }: Props) {
+export default function ProjectTemplate({ data, children, location }: Props) {
   const frontmatter = data.mdx?.frontmatter
+
+  const breadcrumbItems = [
+    { title: "Home", url: "/" },
+    { title: "Projects", url: "/#projects" },
+    { title: frontmatter?.name || "Project", url: location.pathname },
+  ]
+
   return (
     <Layout>
       <Article>
+        <Breadcrumbs items={breadcrumbItems} />
         <ProjectTitle>{frontmatter?.name}</ProjectTitle>
         <MDXProvider>{children}</MDXProvider>
       </Article>
