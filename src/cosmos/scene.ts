@@ -1,5 +1,12 @@
 import * as THREE from 'three'
-import { updateCameraToAlignMoon } from './updateCameraToAlignMoon'
+import { getCameraOrbitPosition, getCameraOrbitPositionSmooth, getCameraRotationQuat } from './cameraControls'
+
+const mouseOrbitRatio = 0.01
+const cameraPositionSpeed = 0.02
+const cameraRotationSpeed = 0.1
+
+let scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight)
+const mousePositionPercentage = new THREE.Vector2(.5, .5)
 
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x000)
@@ -16,7 +23,6 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 )
-camera.position.z = 80
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" })
@@ -55,6 +61,9 @@ material.displacementBias = 1
 const geometry = createAdaptiveGeometry()
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
+
+camera.position.copy(getCameraOrbitPosition(mousePositionPercentage, scrollPercentage, mouseOrbitRatio))
+camera.quaternion.copy(getCameraRotationQuat(camera, mesh, scrollPercentage))
 
 window.addEventListener('resize', onWindowResize, false)
 function onWindowResize() {
@@ -99,20 +108,19 @@ function addStarsToSky() {
 
 // interactions
 
-let x = 0.5
-let y = 0.5
 
 window.addEventListener('mousemove', onMouseMove, false)
 function onMouseMove(event: MouseEvent) {
-  x = event.clientX / window.innerWidth
-  y = event.clientY / window.innerHeight
+  mousePositionPercentage.set(
+    event.clientX / window.innerWidth,
+    event.clientY / window.innerHeight
+  )
 
   if (event.buttons !== 1) {
     return
   }
 }
 
-let scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight)
 window.addEventListener('scroll', onScroll, false)
 function onScroll() {
   scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight)
@@ -124,42 +132,9 @@ function animate() {
   const handle = requestAnimationFrame(animate)
   mesh.rotation.y += 0.00005
 
-  const mouseOrbitRatio = 0.01
-  const cameraInterpolationSpeed = 0.02
+  camera.position.copy(getCameraOrbitPositionSmooth(camera, mousePositionPercentage, scrollPercentage, mouseOrbitRatio, cameraPositionSpeed))
+  camera.quaternion.slerp(getCameraRotationQuat(camera, mesh, scrollPercentage), cameraRotationSpeed)
 
-  const initialDistance = 80, finalDistance = 160
-
-  // Target orbital parameters based on scroll
-  const targetDistance = THREE.MathUtils.lerp(initialDistance, finalDistance, scrollPercentage)
-  let targetHorizontalAngle = (x - 0.5) * Math.PI * 2 * -mouseOrbitRatio
-  let targetVerticalAngle = (y - 0.5) * Math.PI * mouseOrbitRatio
-  targetHorizontalAngle = targetHorizontalAngle - THREE.MathUtils.lerp(0, Math.PI * 1.2, scrollPercentage)
-
-  // Get current orbital parameters from camera position
-  const currentDistance = camera.position.length()
-  const currentHorizontalAngle = Math.atan2(camera.position.x, camera.position.z)
-  const currentVerticalAngle = Math.asin(camera.position.y / currentDistance)
-
-  // Handle angle wrapping for smooth interpolation
-  let angleDiff = targetHorizontalAngle - currentHorizontalAngle
-  if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI
-  if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI
-  const smoothTargetHorizontalAngle = currentHorizontalAngle + angleDiff
-
-  // Interpolate orbital parameters instead of position
-  const distance = THREE.MathUtils.lerp(currentDistance, targetDistance, cameraInterpolationSpeed)
-  const horizontalAngle = THREE.MathUtils.lerp(currentHorizontalAngle, smoothTargetHorizontalAngle, cameraInterpolationSpeed)
-  const verticalAngle = THREE.MathUtils.lerp(currentVerticalAngle, targetVerticalAngle, cameraInterpolationSpeed)
-
-  // Convert back to position
-  camera.position.set(
-    Math.sin(horizontalAngle) * Math.cos(verticalAngle) * distance,
-    Math.sin(verticalAngle) * distance,
-    Math.cos(horizontalAngle) * Math.cos(verticalAngle) * distance,
-  )
-
-  // look at the mesh
-  updateCameraToAlignMoon(camera, mesh, scrollPercentage)
   render()
   return handle
 }
