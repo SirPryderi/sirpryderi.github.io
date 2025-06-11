@@ -166,7 +166,7 @@ function animate() {
   camera.position.lerpVectors(camera.position, cameraPositionTarget, parallaxSpeed)
 
   // look at the mesh
-  updateCameraToAlignMoon(camera, mesh)
+  updateCameraToAlignMoon(camera, mesh, scrollPercentage)
   render()
   return handle
 }
