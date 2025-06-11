@@ -1,11 +1,12 @@
 import * as THREE from 'three'
+import { updateCameraToAlignMoon } from './updateCameraToAlignMoon'
 
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x000)
 
 // Light
 const light = new THREE.PointLight(0xffffff, 1)
-light.position.set(-2000, 0, 30)
+light.position.set(-2000, 0, 0)
 scene.add(light)
 
 // Camera
@@ -117,53 +118,45 @@ function onScroll() {
   scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight)
 }
 
-function updateCameraToAlignMoon(camera: THREE.PerspectiveCamera, moon: THREE.Mesh) {
-  // Convert FOV to radians
-  const fov = camera.fov * (Math.PI / 180)
-  const aspect = camera.aspect
-
-  // Compute the bottom right direction in camera space.
-  // The vector (x, y, z) is from the camera center to the bottom right of the near plane.
-  // Normalize so that the length doesn't matter.
-  const bottomRightCamera = new THREE.Vector3(
-    aspect * Math.tan(fov / 2), // x: right offset
-    -Math.tan(fov / 2),         // y: down offset
-    -1                         // z: forward (-z is forward in camera space)
-  ).normalize()
-
-  const centerCamera = new THREE.Vector3(0, 0, -1)
-  const targetRayCamera = bottomRightCamera.lerp(centerCamera, scrollPercentage).normalize()
-
-  // Get current bottom right ray in world space.
-  const targetRayWorld = targetRayCamera.clone().applyQuaternion(camera.quaternion)
-
-  // Find the direction from the camera to the moon.
-  const desiredDir = new THREE.Vector3().subVectors(moon.position, camera.position).normalize()
-
-  // Compute the rotation that turns the current bottom right direction to the desired direction.
-  const q = new THREE.Quaternion().setFromUnitVectors(targetRayWorld, desiredDir)
-
-  // Update camera rotation.
-  camera.quaternion.premultiply(q)
-}
-
 addStarsToSky()
 
 function animate() {
   const handle = requestAnimationFrame(animate)
   mesh.rotation.y += 0.00005
 
-  // add camera parallax
-  const parallaxRatio = 2
-  const parallaxSpeed = 0.05
+  const mouseOrbitRatio = 0.01
+  const cameraInterpolationSpeed = 0.02
 
-  const cameraPositionTarget = new THREE.Vector3(
-    (x - 0.5) * -parallaxRatio + scrollPercentage * -80,
-    (y - 0.5) * parallaxRatio - scrollPercentage * 100,
-    80,
+  const initialDistance = 80, finalDistance = 160
+
+  // Target orbital parameters based on scroll
+  const targetDistance = THREE.MathUtils.lerp(initialDistance, finalDistance, scrollPercentage)
+  let targetHorizontalAngle = (x - 0.5) * Math.PI * 2 * -mouseOrbitRatio
+  let targetVerticalAngle = (y - 0.5) * Math.PI * mouseOrbitRatio
+  targetHorizontalAngle = targetHorizontalAngle - THREE.MathUtils.lerp(0, Math.PI * 1.2, scrollPercentage)
+
+  // Get current orbital parameters from camera position
+  const currentDistance = camera.position.length()
+  const currentHorizontalAngle = Math.atan2(camera.position.x, camera.position.z)
+  const currentVerticalAngle = Math.asin(camera.position.y / currentDistance)
+
+  // Handle angle wrapping for smooth interpolation
+  let angleDiff = targetHorizontalAngle - currentHorizontalAngle
+  if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI
+  if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI
+  const smoothTargetHorizontalAngle = currentHorizontalAngle + angleDiff
+
+  // Interpolate orbital parameters instead of position
+  const distance = THREE.MathUtils.lerp(currentDistance, targetDistance, cameraInterpolationSpeed)
+  const horizontalAngle = THREE.MathUtils.lerp(currentHorizontalAngle, smoothTargetHorizontalAngle, cameraInterpolationSpeed)
+  const verticalAngle = THREE.MathUtils.lerp(currentVerticalAngle, targetVerticalAngle, cameraInterpolationSpeed)
+
+  // Convert back to position
+  camera.position.set(
+    Math.sin(horizontalAngle) * Math.cos(verticalAngle) * distance,
+    Math.sin(verticalAngle) * distance,
+    Math.cos(horizontalAngle) * Math.cos(verticalAngle) * distance,
   )
-
-  camera.position.lerpVectors(camera.position, cameraPositionTarget, parallaxSpeed)
 
   // look at the mesh
   updateCameraToAlignMoon(camera, mesh, scrollPercentage)
