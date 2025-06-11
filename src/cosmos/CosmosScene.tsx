@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, memo } from "react"
 import styled from "styled-components"
 import { renderer, animate } from "./scene"
 
@@ -11,6 +11,8 @@ const CanvasContainer = styled.div`
 
 function CosmosScene() {
   const mountRef = useRef<HTMLDivElement>(null)
+
+  if (typeof window == "undefined") return null
 
   useEffect(() => {
     mountRef.current!.replaceChildren(renderer.domElement)
@@ -25,4 +27,6 @@ function CosmosScene() {
   return <CanvasContainer ref={mountRef} />
 }
 
-export default CosmosScene
+const CosmosSceneMemo = memo(CosmosScene)
+
+export default CosmosSceneMemo
