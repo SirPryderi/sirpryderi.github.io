@@ -23,7 +23,7 @@ export function updateCameraToAlignMoon(
   camera: THREE.PerspectiveCamera,
   moon: THREE.Mesh,
   scrollPercentage: number,
-  cameraAngularSpeed: number = 0.05
+  cameraAngularSpeed: number = 0.1
 ) {
   // Cache expensive trigonometric calculations
   if (_cachedFov !== camera.fov || _cachedAspect !== camera.aspect) {
