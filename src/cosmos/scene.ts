@@ -49,7 +49,7 @@ bumpTexture.anisotropy = 8
 bumpTexture.minFilter = THREE.LinearMipmapLinearFilter
 bumpTexture.magFilter = THREE.LinearFilter
 material.bumpMap = bumpTexture
-material.bumpScale = 0.25
+material.bumpScale = 0.3
 
 material.displacementMap = bumpTexture
 material.displacementMap.wrapS = THREE.RepeatWrapping
@@ -130,7 +130,7 @@ addStarsToSky()
 
 function animate() {
   const handle = requestAnimationFrame(animate)
-  mesh.rotation.y += 0.00005
+  mesh.rotation.y = performance.now() / 500_000
 
   camera.position.copy(getCameraOrbitPositionSmooth(camera, mousePositionPercentage, scrollPercentage, mouseOrbitRatio, cameraPositionSpeed))
   camera.quaternion.slerp(getCameraRotationQuat(camera, mesh, scrollPercentage), cameraRotationSpeed)
