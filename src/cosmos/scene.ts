@@ -31,13 +31,13 @@ renderer.setPixelRatio(window.devicePixelRatio)
 // Materials
 const material = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 0 })
 
-const texture = new THREE.TextureLoader().load('assets/texture.png')
+const texture = new THREE.TextureLoader().load('/assets/texture.png')
 texture.anisotropy = 8
 texture.minFilter = THREE.LinearMipmapLinearFilter
 texture.magFilter = THREE.LinearFilter
 material.map = texture
 
-const bumpTexture = new THREE.TextureLoader().load('assets/displacement.jpg')
+const bumpTexture = new THREE.TextureLoader().load('/assets/displacement.jpg')
 bumpTexture.anisotropy = 8
 bumpTexture.minFilter = THREE.LinearMipmapLinearFilter
 bumpTexture.magFilter = THREE.LinearFilter
