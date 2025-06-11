@@ -111,11 +111,10 @@ function onMouseMove(event: MouseEvent) {
   }
 }
 
-let scrollPercentage = 0
+let scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight)
 window.addEventListener('scroll', onScroll, false)
 function onScroll() {
-  const scroll = window.scrollY
-  scrollPercentage = scroll / (document.body.scrollHeight - window.innerHeight)
+  scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight)
 }
 
 function updateCameraToAlignMoon(camera: THREE.PerspectiveCamera, moon: THREE.Mesh) {
