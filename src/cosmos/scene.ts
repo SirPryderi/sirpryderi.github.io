@@ -5,7 +5,7 @@ scene.background = new THREE.Color(0x000)
 
 // Light
 const light = new THREE.PointLight(0xffffff, 1)
-light.position.set(-40, 10, 30)
+light.position.set(-2000, 0, 30)
 scene.add(light)
 
 // Camera
@@ -125,20 +125,23 @@ function updateCameraToAlignMoon(camera: THREE.PerspectiveCamera, moon: THREE.Me
   // Compute the bottom right direction in camera space.
   // The vector (x, y, z) is from the camera center to the bottom right of the near plane.
   // Normalize so that the length doesn't matter.
-  const brCam = new THREE.Vector3(
+  const bottomRightCamera = new THREE.Vector3(
     aspect * Math.tan(fov / 2), // x: right offset
     -Math.tan(fov / 2),         // y: down offset
     -1                         // z: forward (-z is forward in camera space)
   ).normalize()
 
+  const centerCamera = new THREE.Vector3(0, 0, -1)
+  const targetRayCamera = bottomRightCamera.lerp(centerCamera, scrollPercentage).normalize()
+
   // Get current bottom right ray in world space.
-  const currentBRWorld = brCam.clone().applyQuaternion(camera.quaternion)
+  const targetRayWorld = targetRayCamera.clone().applyQuaternion(camera.quaternion)
 
   // Find the direction from the camera to the moon.
   const desiredDir = new THREE.Vector3().subVectors(moon.position, camera.position).normalize()
 
   // Compute the rotation that turns the current bottom right direction to the desired direction.
-  const q = new THREE.Quaternion().setFromUnitVectors(currentBRWorld, desiredDir)
+  const q = new THREE.Quaternion().setFromUnitVectors(targetRayWorld, desiredDir)
 
   // Update camera rotation.
   camera.quaternion.premultiply(q)
@@ -151,16 +154,16 @@ function animate() {
   mesh.rotation.y += 0.00005
 
   // add camera parallax
-  const parallaxRatio = 5
-  const parallaxSpeed = 0.005
+  const parallaxRatio = 2
+  const parallaxSpeed = 0.05
 
-  const cameraPositionTarget = {
-    x: (x - 0.5) * parallaxRatio + scrollPercentage * 50,
-    y: (-y + 0.5) * parallaxRatio - scrollPercentage * 100
-  }
+  const cameraPositionTarget = new THREE.Vector3(
+    (x - 0.5) * -parallaxRatio + scrollPercentage * -80,
+    (y - 0.5) * parallaxRatio - scrollPercentage * 100,
+    80,
+  )
 
-  camera.position.x = THREE.MathUtils.lerp(camera.position.x, cameraPositionTarget.x, parallaxSpeed)
-  camera.position.y = THREE.MathUtils.lerp(camera.position.y, cameraPositionTarget.y, parallaxSpeed)
+  camera.position.lerpVectors(camera.position, cameraPositionTarget, parallaxSpeed)
 
   // look at the mesh
   updateCameraToAlignMoon(camera, mesh)
