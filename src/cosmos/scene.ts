@@ -9,7 +9,7 @@ let scrollPercentage = window.scrollY / (document.body.scrollHeight - window.inn
 const mousePositionPercentage = new THREE.Vector2(.5, .5)
 
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x000)
+scene.background = new THREE.Color(0x0a0e0c)
 
 // Light
 const light = new THREE.PointLight(0xffffff, 1)
@@ -36,7 +36,7 @@ if (renderer.capabilities.isWebGL2) {
 renderer.setPixelRatio(window.devicePixelRatio)
 
 // Materials
-const material = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 0 })
+const material = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 0, emissive: 0x0a0e0c })
 
 const texture = new THREE.TextureLoader().load('/assets/texture.png')
 texture.anisotropy = 8

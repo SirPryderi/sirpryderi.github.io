@@ -6,7 +6,7 @@ type PageContext = { frontmatter: { name: string } }
 const LayoutHead: HeadFC<object, PageContext> = ({ pageContext }) => (
   <>
     <title>{pageContext.frontmatter?.name || "Home Page"}</title>
-    <style>{`body { margin: 0; background-color: black; }`}</style>
+    <style>{`body { margin: 0; background-color: #0a0e0c; }`}</style>
   </>
 )
 
