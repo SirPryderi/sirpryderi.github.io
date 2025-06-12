@@ -6,7 +6,7 @@ import Layout from "../../components/Layout"
 import styled from "styled-components"
 import LayoutHead from "../../components/LayoutHead"
 
-type Props = PageProps<Queries.ProjectQuery>
+type Props = PageProps<Queries.ProjectBySlugQuery>
 
 const Article = styled.article`
   max-width: 900px;
@@ -41,26 +41,27 @@ export default function ProjectTemplate({ data, children, location }: Props) {
   ]
 
   return (
-    <Layout>
+    <>
       <Article>
         <Breadcrumbs items={breadcrumbItems} />
         <ProjectTitle>{frontmatter?.name}</ProjectTitle>
         <MDXProvider>{children}</MDXProvider>
       </Article>
-    </Layout>
+    </>
   )
 }
 
 export const Head = LayoutHead
 
 export const pageQuery = graphql`
-  query Project($id: String!) {
-    mdx(id: { eq: $id }) {
+  query ProjectBySlug($frontmatter__slug: String!) {
+      mdx(frontmatter: { slug: { eq: $frontmatter__slug } }) {
       frontmatter {
         slug
         name
         priority
       }
+      body
     }
   }
 `
