@@ -27,7 +27,7 @@ const config: GatsbyConfig = {
         fonts: [
           {
             family: 'Oxanium',
-            weights: ['200', '600']
+            weights: ['200', '400', '600', '700']
           },
         ]
       }
