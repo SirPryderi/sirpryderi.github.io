@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, memo } from "react"
 import styled from "styled-components"
-import { renderer, animate } from "./scene"
+import { setup } from "./scene"
 
 const CanvasContainer = styled.div`
   position: fixed;
@@ -13,13 +13,11 @@ function CosmosScene() {
   const mountRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const { animate, stop, renderer } = setup()
     mountRef.current!.replaceChildren(renderer.domElement)
-    const handle = animate()
+    animate()
 
-    return () => {
-      cancelAnimationFrame(handle)
-      mountRef.current?.removeChild(renderer.domElement)
-    }
+    return stop
   }, [])
 
   return <CanvasContainer ref={mountRef} />

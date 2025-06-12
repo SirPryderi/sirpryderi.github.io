@@ -128,19 +128,28 @@ function onScroll() {
 
 addStarsToSky()
 
-function animate() {
-  const handle = requestAnimationFrame(animate)
-  mesh.rotation.y = performance.now() / 500_000
-
-  camera.position.copy(getCameraOrbitPositionSmooth(camera, mousePositionPercentage, scrollPercentage, mouseOrbitRatio, cameraPositionSpeed))
-  camera.quaternion.slerp(getCameraRotationQuat(camera, mesh, scrollPercentage), cameraRotationSpeed)
-
-  render()
-  return handle
-}
-
 function render() {
   renderer.render(scene, camera)
 }
 
-export { renderer, animate }
+function setup() {
+  let animationHandle = 0
+
+  function animate() {
+    mesh.rotation.y = performance.now() / 500_000
+
+    camera.position.copy(getCameraOrbitPositionSmooth(camera, mousePositionPercentage, scrollPercentage, mouseOrbitRatio, cameraPositionSpeed))
+    camera.quaternion.slerp(getCameraRotationQuat(camera, mesh, scrollPercentage), cameraRotationSpeed)
+
+    render()
+    animationHandle = requestAnimationFrame(animate)
+  }
+
+  function stop() {
+    cancelAnimationFrame(animationHandle)
+  }
+
+  return { animate, stop, renderer }
+}
+
+export { setup }
