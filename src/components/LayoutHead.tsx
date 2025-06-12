@@ -1,5 +1,4 @@
 import * as React from "react"
-import "../cosmos/scene"
 import { HeadFC } from "gatsby"
 
 type PageContext = { frontmatter: { name: string } }

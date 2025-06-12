@@ -1,5 +1,4 @@
 import * as React from "react"
-import "../cosmos/scene"
 import { graphql, Link, type PageProps } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"

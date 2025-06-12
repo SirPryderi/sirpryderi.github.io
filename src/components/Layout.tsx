@@ -1,7 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
 import CosmosScene from "../cosmos/CosmosScene"
-import "../cosmos/scene"
 
 const Main = styled.main`
   color: white;
