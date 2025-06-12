@@ -18,7 +18,7 @@ const BreadcrumbsContainer = styled.nav`
   gap: 0.5rem;
   margin-bottom: 2rem;
   font-size: 0.9rem;
-  font-family: "Oxanium", sans-serif;
+  font-family: monospace;
   
   @media (max-width: 768px) {
     font-size: 0.8rem;
@@ -60,7 +60,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
             {item.title}
           </BreadcrumbLink>
           {index < items.length - 1 && (
-            <Separator>&raquo;</Separator>
+            <Separator>&gt;</Separator>
           )}
         </React.Fragment>
       ))}

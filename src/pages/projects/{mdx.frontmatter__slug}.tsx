@@ -35,9 +35,9 @@ export default function ProjectTemplate({ data, children, location }: Props) {
   const frontmatter = data.mdx?.frontmatter
 
   const breadcrumbItems = [
-    { title: "Home", url: "/" },
-    { title: "Projects", url: "/#projects" },
-    { title: frontmatter?.name || "Project", url: location.pathname },
+    { title: "home", url: "/" },
+    { title: "projects", url: "/#projects" },
+    { title: frontmatter?.slug || "project", url: location.pathname },
   ]
 
   return (
