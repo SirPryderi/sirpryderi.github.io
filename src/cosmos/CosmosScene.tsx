@@ -12,8 +12,6 @@ const CanvasContainer = styled.div`
 function CosmosScene() {
   const mountRef = useRef<HTMLDivElement>(null)
 
-  if (typeof window == "undefined") return null
-
   useEffect(() => {
     mountRef.current!.replaceChildren(renderer.domElement)
     const handle = animate()
