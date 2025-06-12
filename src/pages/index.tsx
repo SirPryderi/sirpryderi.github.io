@@ -3,20 +3,23 @@ import { graphql, Link, type PageProps } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"
 import LayoutHead from "../components/LayoutHead"
+import Button from "../components/Button"
+import { StaticImage } from "gatsby-plugin-image"
+import HobbyList from "../components/HobbyList"
 
-const Slide = styled.section`
+const Slide = styled.section<{ $fullSize?: boolean }>`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  max-width: 1800px;
-  padding: 0 200px;
+  max-width: 1840px;
+  padding: 40px 200px;
   margin: 0 auto;
   justify-content: center;
-  min-height: 100vh;
+  min-height: ${(props) => (props.$fullSize ? "100vh" : "auto")};
 
   // responsive breakpoints
   @media (max-width: 768px) {
-    justify-content: flex-start;
-    padding: 20px;
+    padding: 40px 20px;
   }
 
   h2 {
@@ -26,23 +29,48 @@ const Slide = styled.section`
 `
 
 const Title = styled.div`
-  font-size: 5rem;
+  display: flex;
+  flex-flow: column;
+
   @media (max-width: 768px) {
-    font-size: 3rem;
+    box-sizing: border-box;
+    justify-self: flex-start;
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+    padding-top: 40px;
   }
 
-  .name {
-    font-weight: 600;
+  h1 {
+    margin: 1rem 0;
+    font-size: 86px;
+
+    @media (max-width: 768px) {
+      font-size: 3rem;
+    }
+
+    .name {
+      font-weight: 600;
+    }
+
+    .surname {
+      font-weight: 200;
+    }
   }
 
-  .surname {
+  .role {
     font-weight: 200;
+    display: inline-flex;
+    font-size: 36px;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
   }
 `
 
 const ProjectsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
   width: 100%;
@@ -55,21 +83,20 @@ const ProjectsGrid = styled.div`
 const ProjectCard = styled(Link)`
   display: flex;
   flex-direction: column;
-  background: rgba(30, 30, 30, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  padding: 2rem 1.5rem;
+  background-color: #0a0e0c;
+  border: 2px solid white;
+
+  padding: 1.5rem 1rem;
   color: #fff;
   text-decoration: none;
-  box-shadow: 0 2px 24px 0 rgba(0, 0, 0, 0.18);
+
   transition: background 0.3s, box-shadow 0.3s, border 0.3s;
   position: relative;
   overflow: hidden;
 
   &:hover {
     background: rgba(60, 60, 60, 0.85);
-    border: 1px solid #ffe066;
-    box-shadow: 0 4px 32px 0 rgba(255, 224, 102, 0.08);
+    border: 2px solid #dbc554;
   }
 
   h3 {
@@ -80,17 +107,92 @@ const ProjectCard = styled(Link)`
   }
 `
 
+const Blackout = styled.div`
+  display: grid;
+
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  display: flex;
+  background-color: #0a0e0c;
+  width: 100%;
+  padding: 10vh 0;
+
+  margin-bottom: 160px;
+`
+
+const FlexRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: space-between;
+
+  > * {
+    flex-basis: 200px;
+    flex: 1;
+    min-width: 200px;
+  }
+`
+
 const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
   return (
     <Layout>
-      <Slide>
+      <Slide $fullSize>
         <Title>
+          <div className="role">Full-Stack Engineer</div>
           <h1>
             <span className="name">Vittorio</span>{" "}
             <span className="surname">Iocolano</span>
           </h1>
+          <Button href="mailto:pryderi.mail@gmail.com">Hire Me</Button>
         </Title>
       </Slide>
+
+      <Blackout>
+        <Slide id="about">
+          <h2>About</h2>
+          <FlexRow>
+            <div style={{ flexBasis: 512 }}>
+              <p>
+                I'm Vittorio, a full stack-stack developer based in Scotland.
+                I've been writing code professionally since 2015, but my real
+                passion lies in building software that sparks joy.
+              </p>
+              <p>
+                I combine technical expertise but without losing track of what
+                brings customers value, always asking{" "}
+                <i>"what if we tried it differently?"</i>
+              </p>
+              <p>
+                When I'm not coding, you'll find me playing (or designing!)
+                board games, capturing the world through my camera lens, or
+                exploring Scotland's trails on foot or by bike.
+              </p>
+            </div>
+
+            <HobbyList
+              hobbies={[
+                "Engineering",
+                "Photography",
+                "Parkour",
+                "Hiking",
+                "Bikepacking",
+                "Videogames",
+                "Board games",
+                "TTRPGs",
+              ]}
+            />
+
+            <StaticImage
+              aspectRatio={1}
+              alt="Vittorio Iocolano"
+              src="../images/photo.png"
+              
+              transformOptions={{ grayscale: true }}
+              style={{ maxWidth: 256, maxHeight: 256 }}
+            />
+          </FlexRow>
+        </Slide>
+      </Blackout>
 
       <Slide id="projects">
         <h2>Projects</h2>
@@ -107,7 +209,7 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
         </ProjectsGrid>
       </Slide>
 
-      <Slide style={{textAlign: "center"}}>
+      <Slide style={{ textAlign: "center" }} $fullSize>
         <h2>The end.</h2>
       </Slide>
     </Layout>
