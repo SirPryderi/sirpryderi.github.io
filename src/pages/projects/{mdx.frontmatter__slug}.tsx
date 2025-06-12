@@ -41,13 +41,13 @@ export default function ProjectTemplate({ data, children, location }: Props) {
   ]
 
   return (
-    <>
+    <Layout>
       <Article>
         <Breadcrumbs items={breadcrumbItems} />
         <ProjectTitle>{frontmatter?.name}</ProjectTitle>
         <MDXProvider>{children}</MDXProvider>
       </Article>
-    </>
+    </Layout>
   )
 }
 
