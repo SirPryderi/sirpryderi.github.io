@@ -21,6 +21,17 @@ const config: GatsbyConfig = {
         ]
       }
     },
+    {
+      resolve: `gatsby-plugin-google-fonts-v2`,
+      options: {
+        fonts: [
+          {
+            family: 'Oxanium',
+            weights: ['200', '600']
+          },
+        ]
+      }
+    },
     "gatsby-plugin-image",
     "gatsby-plugin-sitemap",
     {
