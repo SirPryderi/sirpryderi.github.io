@@ -13,6 +13,7 @@ import {
   faInstagram,
   faLinkedinIn,
 } from "@fortawesome/free-brands-svg-icons"
+import About from "../../content/about.mdx"
 
 const Slide = styled.section<{ $fullSize?: boolean }>`
   box-sizing: border-box;
@@ -164,21 +165,7 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
           <h2>About</h2>
           <FlexRow>
             <div style={{ flexBasis: 512 }}>
-              <p>
-                I'm Vittorio (he/him), a full stack-stack engineer based in
-                Scotland. I've been writing code professionally since 2015, but
-                my real passion lies in building software that sparks joy.
-              </p>
-              <p>
-                I combine technical expertise but without losing track of what
-                brings customers value, always asking{" "}
-                <i>"what if we tried it differently?"</i>
-              </p>
-              <p>
-                When I'm not coding, you'll find me playing (or designing!)
-                board games, capturing the world through my camera lens, or
-                exploring Scotland's trails on foot or by bike.
-              </p>
+              <About />
             </div>
 
             <HobbyList
@@ -292,16 +279,9 @@ export const pageQuery = graphql`
           contentFilePath: { regex: "/content/project/" }
         }
       }
-      sort: [ {
-         frontmatter:  {
-            priority: ASC
-         }
-      }
-      {
-        frontmatter:  {
-           priority: ASC
-        }
-      }
+      sort: [
+        { frontmatter: { priority: ASC } }
+        { frontmatter: { name: ASC } }
       ]
     ) {
       nodes {
@@ -316,6 +296,10 @@ export const pageQuery = graphql`
           contentFilePath: { regex: "/content/games/" }
         }
       }
+      sort: [
+        { frontmatter: { priority: ASC } }
+        { frontmatter: { name: ASC } }
+      ]
     ) {
       nodes {
         ...MdxFields
