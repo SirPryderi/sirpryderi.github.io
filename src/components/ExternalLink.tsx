@@ -15,12 +15,17 @@ const StyledLink = styled.a`
   display: inline-flex;
   align-items: baseline;
   gap: 0.4em;
-  transition: color 0.2s;
-  /* line-height: 1rem; */
+  padding: 0 .25rem;
 
-  &:hover {
-    color: #dbc554;
+  &:hover, &:focus {
+    background-color: white;
+    color: #0a0e0c;
     text-decoration: underline;
+    text-shadow: none;
+  }
+
+  &:active {
+    transform: translateY(2px) translateX(2px);
   }
 
   svg {
@@ -43,7 +48,7 @@ const iconMap = {
 
 export const ExternalLinkContainer = styled.div`
   display: inline-flex;
-  gap: 1rem;
+  gap: 0.5rem;
 `
 
 const ExternalLink: React.FC<ExternalLinkProps> = ({
@@ -52,9 +57,7 @@ const ExternalLink: React.FC<ExternalLinkProps> = ({
   icon = "link",
 }) => (
   <StyledLink href={href} target="_blank" rel="noopener noreferrer">
-    {icon && iconMap[icon] && (
-      <FontAwesomeIcon icon={iconMap[icon]} />
-    )}
+    {icon && iconMap[icon] && <FontAwesomeIcon icon={iconMap[icon]} />}
     {text}
   </StyledLink>
 )

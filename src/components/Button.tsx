@@ -13,14 +13,19 @@ const baseStyles = css`
   width: fit-content;
   padding: 5px 20px;
   font-weight: 200;
-  transition: color 0.3s, background 0.3s, border 0.3s;
   position: relative;
   overflow: hidden;
   text-decoration: none;
 
-  &:hover {
-    border: 2px solid #dbc554;
-    color: #dbc554;
+  &:hover, &:focus {
+    background-color: white;
+    color: #0a0e0c;
+    border: 2px solid #0a0e0c;
+    font-weight: 400;
+  }
+
+  &:active {
+    transform: translateY(2px) translateX(2px);
   }
 `
 

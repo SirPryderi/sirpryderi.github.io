@@ -29,7 +29,6 @@ const BreadcrumbsContainer = styled.nav`
 const BreadcrumbLink = styled(Link)`
   color: #a0a0a0;
   text-decoration: none;
-  transition: color 0.2s ease;
   
   &:hover {
     color: white;

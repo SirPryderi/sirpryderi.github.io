@@ -88,22 +88,26 @@ const ProjectsGrid = styled.div`
 `
 
 const ProjectCard = styled(Link)`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   background-color: #0a0e0c;
   border: 2px solid white;
-
   padding: 1.5rem 1rem;
   color: #fff;
   text-decoration: none;
 
-  transition: background 0.3s, box-shadow 0.3s, border 0.3s;
   position: relative;
   overflow: hidden;
 
   &:hover {
-    background: rgba(60, 60, 60, 0.85);
-    border: 2px solid #dbc554;
+    background-color: white;
+    color: #0a0e0c;
+    border-color: #0a0e0c;
+  }
+
+  &:active {
+    transform: translateY(2px) translateX(2px);
   }
 
   h3 {
@@ -195,7 +199,11 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
               alt="Vittorio Iocolano"
               src="../images/photo.png"
               transformOptions={{ grayscale: true }}
-              style={{ maxWidth: 256, maxHeight: 256, border: "2px solid white" }}
+              style={{
+                maxWidth: 256,
+                maxHeight: 256,
+                border: "2px solid white",
+              }}
             />
           </FlexRow>
         </Slide>
