@@ -55,7 +55,7 @@ const Button = ({ children, to, href, ...props }: ButtonProps) => {
       <StyledAnchor
         href={href}
         target="_blank"
-        referrerPolicy="no-referrer"
+        rel="noopener noreferrer"
         {...props}
       >
         {children}

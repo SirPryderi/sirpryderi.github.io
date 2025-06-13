@@ -6,6 +6,13 @@ import LayoutHead from "../components/LayoutHead"
 import Button from "../components/Button"
 import { StaticImage } from "gatsby-plugin-image"
 import HobbyList from "../components/HobbyList"
+import Socials from "../components/Socials"
+import { faEnvelopeSquare } from "@fortawesome/free-solid-svg-icons"
+import {
+  faGithubSquare,
+  faInstagramSquare,
+  faLinkedin,
+} from "@fortawesome/free-brands-svg-icons"
 
 const Slide = styled.section<{ $fullSize?: boolean }>`
   box-sizing: border-box;
@@ -145,6 +152,7 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
           </h1>
           <Button href="mailto:pryderi.mail@gmail.com">Hire Me</Button>
         </Title>
+        {/* ▿ */}
       </Slide>
 
       <Blackout>
@@ -153,9 +161,9 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
           <FlexRow>
             <div style={{ flexBasis: 512 }}>
               <p>
-                I'm Vittorio, a full stack-stack developer based in Scotland.
-                I've been writing code professionally since 2015, but my real
-                passion lies in building software that sparks joy.
+                I'm Vittorio (he/him), a full stack-stack engineer based in
+                Scotland. I've been writing code professionally since 2015, but
+                my real passion lies in building software that sparks joy.
               </p>
               <p>
                 I combine technical expertise but without losing track of what
@@ -186,7 +194,6 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
               aspectRatio={1}
               alt="Vittorio Iocolano"
               src="../images/photo.png"
-              
               transformOptions={{ grayscale: true }}
               style={{ maxWidth: 256, maxHeight: 256 }}
             />
@@ -209,8 +216,36 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
         </ProjectsGrid>
       </Slide>
 
-      <Slide style={{ textAlign: "center" }} $fullSize>
-        <h2>The end.</h2>
+      <Slide
+        id="socials"
+        aria-label="Social Links"
+        style={{ textAlign: "center" }}
+        $fullSize
+      >
+        <Socials
+          socials={[
+            {
+              id: "email",
+              url: "mailto:pryderi.mail@gmail.com",
+              icon: faEnvelopeSquare,
+            },
+            {
+              id: "linkedin",
+              url: "https://www.linkedin.com/in/vittorio-iocolano/",
+              icon: faLinkedin,
+            },
+            {
+              id: "github",
+              url: "https://github.com/sirpryderi",
+              icon: faGithubSquare,
+            },
+            {
+              id: "instagram",
+              url: "https://www.instagram.com/sirpryderi/",
+              icon: faInstagramSquare,
+            },
+          ]}
+        />
       </Slide>
     </Layout>
   )

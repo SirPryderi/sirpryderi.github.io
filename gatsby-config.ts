@@ -5,7 +5,7 @@ const config: GatsbyConfig = {
     title: `Vittorio Iocolano's Website`,
     siteUrl: `https://sirpryderi.github.io`,
     description: `Vittorio Iocolano's personal website, containing biography and portfolio`,
-    keywords: `Vittorio Iocolano, Software, Game, Web, Web, Developer, Programmer, Engineer`
+    keywords: `Vittorio Iocolano, Software, Game, Web, Developer, Programmer, Engineer`
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
   // If you use VSCode you can also use the GraphQL plugin
@@ -43,6 +43,7 @@ const config: GatsbyConfig = {
     "gatsby-plugin-mdx",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    "gatsby-plugin-fontawesome-css",
     {
       resolve: 'gatsby-source-filesystem',
       options: {
