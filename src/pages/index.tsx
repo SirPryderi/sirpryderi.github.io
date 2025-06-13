@@ -212,13 +212,28 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
       <Slide id="projects">
         <h2>Projects</h2>
         <ProjectsGrid>
-          {data.allMdx.nodes.map(({ frontmatter }) => (
+          {data.projects.nodes.map(({ frontmatter }) => (
             <ProjectCard
               key={frontmatter!.slug}
               to={`/projects/${frontmatter!.slug}`}
             >
               <h3>{frontmatter!.name}</h3>
               <pre>{`> /projects/${frontmatter!.slug}`}</pre>
+            </ProjectCard>
+          ))}
+        </ProjectsGrid>
+      </Slide>
+
+      <Slide id="games">
+        <h2>Games</h2>
+        <ProjectsGrid>
+          {data.games.nodes.map(({ frontmatter }) => (
+            <ProjectCard
+              key={frontmatter!.slug}
+              to={`/games/${frontmatter!.slug}`}
+            >
+              <h3>{frontmatter!.name}</h3>
+              <pre>{`> /games/${frontmatter!.slug}`}</pre>
             </ProjectCard>
           ))}
         </ProjectsGrid>
@@ -260,13 +275,50 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
 }
 
 export const pageQuery = graphql`
+  fragment MdxFields on Mdx {
+    excerpt
+    frontmatter {
+      name
+      slug
+      priority
+    }
+  }
+
   query HomePage {
-    allMdx {
-      nodes {
-        frontmatter {
-          name
-          slug
+    projects: allMdx(
+      filter: {
+        internal: {
+          type: { eq: "Mdx" }
+          contentFilePath: { regex: "/content/project/" }
         }
+      }
+      sort: [ {
+         frontmatter:  {
+            priority: ASC
+         }
+      }
+      {
+        frontmatter:  {
+           priority: ASC
+        }
+      }
+      ]
+    ) {
+      nodes {
+        ...MdxFields
+      }
+    }
+
+    games: allMdx(
+      filter: {
+        internal: {
+          type: { eq: "Mdx" }
+          contentFilePath: { regex: "/content/games/" }
+        }
+      }
+    ) {
+      nodes {
+        ...MdxFields
       }
     }
   }

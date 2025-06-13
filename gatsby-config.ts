@@ -63,10 +63,10 @@ const config: GatsbyConfig = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        "name": "projects",
-        "path": "./content/projects/"
+        "name": "content",
+        "path": "./content/"
       },
-      __key: "projects"
+      __key: "content"
     }
   ]
 }
