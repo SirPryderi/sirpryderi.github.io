@@ -3,6 +3,7 @@ import {
   faDiscord,
   faGithub,
   faGooglePlay,
+  faItchIo,
 } from "@fortawesome/free-brands-svg-icons"
 import { faExternalLink } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -36,7 +37,7 @@ const StyledLink = styled.a`
 type ExternalLinkProps = {
   text: string
   href: string
-  icon?: "github" | "google-play" | "discord" | "link"
+  icon?: "github" | "google-play" | "discord" | "itch-io" | "link"
 }
 
 const iconMap = {
@@ -44,6 +45,7 @@ const iconMap = {
   "google-play": faGooglePlay,
   discord: faDiscord,
   link: faExternalLink,
+  "itch-io": faItchIo
 }
 
 export const ExternalLinkContainer = styled.div`
