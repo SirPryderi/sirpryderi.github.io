@@ -12,13 +12,27 @@ const SocialsRow = styled.div`
 `
 
 const SocialLink = styled.a`
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
   color: #fff;
   font-size: 2.5rem;
-  transition: color 0.2s;
+  padding: 5px;
+
+  svg {
+    width: 1em;
+  }
+
+  border-radius: 4px;
 
   &:hover,
   &:focus {
-    color: #dbc554;
+    color: #0a0e0c;
+    background-color: white;
+  }
+
+  &:active {
+    transform: translateY(2px) translateX(2px);
   }
 `
 

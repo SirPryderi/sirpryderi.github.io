@@ -7,11 +7,11 @@ import Button from "../components/Button"
 import { StaticImage } from "gatsby-plugin-image"
 import HobbyList from "../components/HobbyList"
 import Socials from "../components/Socials"
-import { faEnvelopeSquare } from "@fortawesome/free-solid-svg-icons"
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
 import {
-  faGithubSquare,
-  faInstagramSquare,
-  faLinkedin,
+  faGithub,
+  faInstagram,
+  faLinkedinIn,
 } from "@fortawesome/free-brands-svg-icons"
 
 const Slide = styled.section<{ $fullSize?: boolean }>`
@@ -235,22 +235,22 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
             {
               id: "email",
               url: "mailto:pryderi.mail@gmail.com",
-              icon: faEnvelopeSquare,
+              icon: faEnvelope,
             },
             {
               id: "linkedin",
               url: "https://www.linkedin.com/in/vittorio-iocolano/",
-              icon: faLinkedin,
+              icon: faLinkedinIn,
             },
             {
               id: "github",
               url: "https://github.com/sirpryderi",
-              icon: faGithubSquare,
+              icon: faGithub,
             },
             {
               id: "instagram",
               url: "https://www.instagram.com/sirpryderi/",
-              icon: faInstagramSquare,
+              icon: faInstagram,
             },
           ]}
         />
