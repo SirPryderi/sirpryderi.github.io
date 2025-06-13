@@ -1,19 +1,20 @@
 import { graphql, type PageProps } from "gatsby"
 import React from "react"
-import Article, { ArticleMdx, ArticleTitle } from "../../components/Article"
-import Breadcrumbs from "../../components/Breadcrumbs"
-import Layout from "../../components/Layout"
-import LayoutHead from "../../components/LayoutHead"
+import Article, { ArticleMdx, ArticleTitle } from "../components/Article"
+import Breadcrumbs from "../components/Breadcrumbs"
+import Layout from "../components/Layout"
+import LayoutHead from "../components/LayoutHead"
 
-type Props = PageProps<Queries.GameBySlugQuery>
+type Props = PageProps<Queries.AnyContentByIdQuery>
 
 export default function GameTemplate({ data, children, location }: Props) {
   const frontmatter = data.mdx?.frontmatter
+  const type = data.mdx?.fields?.type || "UNKNOWN"
 
   const breadcrumbItems = [
     { title: "home", url: "/" },
-    { title: "games", url: "/#games" },
-    { title: frontmatter?.slug || "game", url: location.pathname },
+    { title: type, url: `/#${type}` },
+    { title: frontmatter?.slug || type, url: location.pathname },
   ]
 
   return (
@@ -28,14 +29,18 @@ export default function GameTemplate({ data, children, location }: Props) {
 }
 
 export const pageQuery = graphql`
-  query GameBySlug($frontmatter__slug: String!) {
-    mdx(frontmatter: { slug: { eq: $frontmatter__slug } }, internal: {type: {eq: "Mdx"}, contentFilePath: {regex: "/content/game/"}}) {
+  query AnyContentById($id: String) {
+    mdx(id: { eq: $id }) {
+      id
+      body
       frontmatter {
         slug
         name
         priority
       }
-      body
+      fields {
+        type
+      }
     }
   }
 `
