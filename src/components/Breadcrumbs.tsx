@@ -60,7 +60,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
             {item.title}
           </BreadcrumbLink>
           {index < items.length - 1 && (
-            <Separator>&gt;</Separator>
+            <Separator>//</Separator>
           )}
         </React.Fragment>
       ))}
