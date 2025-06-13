@@ -5,6 +5,9 @@ import Breadcrumbs from "../../components/Breadcrumbs"
 import Layout from "../../components/Layout"
 import styled from "styled-components"
 import LayoutHead from "../../components/LayoutHead"
+import ExternalLink, {
+  ExternalLinkContainer,
+} from "../../components/ExternalLink"
 
 type Props = PageProps<Queries.ProjectBySlugQuery>
 
@@ -14,6 +17,8 @@ const Article = styled.article`
   padding: 4rem 2rem 2rem 2rem;
   color: white;
   font-family: "Oxanium", sans-serif;
+
+  text-shadow: 0 0px 5px #0a0e0c;
 
   @media (max-width: 768px) {
     padding: 2rem 1rem;
@@ -31,6 +36,8 @@ const ProjectTitle = styled.h1`
   }
 `
 
+const shortcodes = { ExternalLink, ExternalLinkContainer }
+
 export default function ProjectTemplate({ data, children, location }: Props) {
   const frontmatter = data.mdx?.frontmatter
 
@@ -45,7 +52,7 @@ export default function ProjectTemplate({ data, children, location }: Props) {
       <Article>
         <Breadcrumbs items={breadcrumbItems} />
         <ProjectTitle>{frontmatter?.name}</ProjectTitle>
-        <MDXProvider>{children}</MDXProvider>
+        <MDXProvider components={shortcodes}>{children}</MDXProvider>
       </Article>
     </Layout>
   )
@@ -55,7 +62,7 @@ export const Head = LayoutHead
 
 export const pageQuery = graphql`
   query ProjectBySlug($frontmatter__slug: String!) {
-      mdx(frontmatter: { slug: { eq: $frontmatter__slug } }) {
+    mdx(frontmatter: { slug: { eq: $frontmatter__slug } }) {
       frontmatter {
         slug
         name
