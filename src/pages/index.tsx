@@ -195,7 +195,7 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
               alt="Vittorio Iocolano"
               src="../images/photo.png"
               transformOptions={{ grayscale: true }}
-              style={{ maxWidth: 256, maxHeight: 256 }}
+              style={{ maxWidth: 256, maxHeight: 256, border: "2px solid white" }}
             />
           </FlexRow>
         </Slide>
