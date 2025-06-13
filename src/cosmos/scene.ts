@@ -136,7 +136,7 @@ function setup() {
   let animationHandle = 0
 
   function animate() {
-    mesh.rotation.y = performance.now() / 500_000
+    mesh.rotation.y = Date.now() / 500_000
 
     camera.position.copy(getCameraOrbitPositionSmooth(camera, mousePositionPercentage, scrollPercentage, mouseOrbitRatio, cameraPositionSpeed))
     camera.quaternion.slerp(getCameraRotationQuat(camera, mesh, scrollPercentage), cameraRotationSpeed)
