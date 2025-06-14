@@ -73,7 +73,7 @@ export function getOrbitalParameters(
   let initialDistance = 80, finalDistance = 160
   const initialRotation = 0, finalRotation = Math.PI * 1.2
 
-  if (aspectRatio < 0.6) {
+  if (aspectRatio < 1) {
     // adjust orbit distance for vertical devices
     initialDistance = THREE.MathUtils.lerp(160, 80, aspectRatio)
     finalDistance = 360
