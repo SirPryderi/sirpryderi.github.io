@@ -5,7 +5,9 @@ const mouseOrbitRatio = 0.01
 const cameraPositionSpeed = 0.02
 const cameraRotationSpeed = 0.1
 
-let scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight)
+let [_viewportWidth, _viewportHeight] = getViewportSize()
+
+let scrollPercentage = window.scrollY / (document.body.scrollHeight - _viewportHeight)
 const mousePositionPercentage = new THREE.Vector2(.5, .5)
 
 const scene = new THREE.Scene()
@@ -19,14 +21,14 @@ scene.add(light)
 // Camera
 const camera = new THREE.PerspectiveCamera(
   35,
-  window.innerWidth / window.innerHeight,
+  _viewportWidth / _viewportHeight,
   0.1,
   1000
 )
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" })
-renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setSize(_viewportWidth, _viewportHeight)
 renderer.setClearColor(0x000000, 0)
 
 if (renderer.capabilities.isWebGL2) {
@@ -65,12 +67,23 @@ scene.add(mesh)
 camera.position.copy(getCameraOrbitPosition(mousePositionPercentage, scrollPercentage, mouseOrbitRatio))
 camera.quaternion.copy(getCameraRotationQuat(camera, mesh, scrollPercentage))
 
+function getViewportSize() {
+  const newWidth = window.visualViewport?.width || window.innerWidth
+  const newHeight = window.visualViewport?.height || window.innerHeight
+  return [newWidth, newHeight]
+}
+
 window.addEventListener('resize', onWindowResize, false)
+window.visualViewport?.addEventListener('resize', onWindowResize, false)
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight
-  camera.updateProjectionMatrix()
-  renderer.setSize(window.innerWidth, window.innerHeight)
+  const [newWidth, newHeight] = getViewportSize()
+  if (newWidth === _viewportWidth && newHeight === _viewportHeight) return
+  _viewportWidth = newWidth
+  _viewportHeight = newHeight
+  camera.aspect = _viewportWidth / _viewportHeight
+  renderer.setSize(_viewportWidth, _viewportHeight)
   renderer.setPixelRatio(window.devicePixelRatio)
+  camera.updateProjectionMatrix()
   render()
 }
 
@@ -79,7 +92,7 @@ function createAdaptiveGeometry() {
   const heightSegmentMax = 256, heightSegmentBase = 128, heightSegmentMin = 32
 
   const pixelRatio = window.devicePixelRatio || 1
-  const screenArea = window.innerWidth * window.innerHeight
+  const screenArea = _viewportWidth * _viewportHeight
   const scaleFactor = Math.sqrt(screenArea / (1920 * 1080)) * pixelRatio
 
   const widthSegments = Math.min(widthSegmentMax, Math.max(widthSegmentMin, Math.floor(widthSegmentBase * scaleFactor)))
@@ -112,8 +125,8 @@ function addStarsToSky() {
 window.addEventListener('mousemove', onMouseMove, false)
 function onMouseMove(event: MouseEvent) {
   mousePositionPercentage.set(
-    event.clientX / window.innerWidth,
-    event.clientY / window.innerHeight
+    event.clientX / _viewportWidth,
+    event.clientY / _viewportHeight
   )
 
   if (event.buttons !== 1) {
@@ -123,7 +136,7 @@ function onMouseMove(event: MouseEvent) {
 
 window.addEventListener('scroll', onScroll, false)
 function onScroll() {
-  scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight)
+  scrollPercentage = window.scrollY / (document.body.scrollHeight - _viewportHeight)
 }
 
 addStarsToSky()
