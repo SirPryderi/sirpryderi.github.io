@@ -68,9 +68,16 @@ export function getOrbitalParameters(
   mousePositionPercentage: THREE.Vector2,
   scrollPercentage: number,
   mouseOrbitRatio: number,
+  aspectRatio: number,
 ): [number, number, number] {
-  const initialDistance = 80, finalDistance = 160
+  let initialDistance = 80, finalDistance = 160
   const initialRotation = 0, finalRotation = Math.PI * 1.2
+
+  if (aspectRatio < 0.6) {
+    // adjust orbit distance for vertical devices
+    initialDistance = THREE.MathUtils.lerp(160, 80, aspectRatio)
+    finalDistance = 360
+  }
 
   // Target orbital parameters based on scroll
   const targetDistance = THREE.MathUtils.lerp(initialDistance, finalDistance, scrollPercentage)
@@ -85,8 +92,9 @@ export function getCameraOrbitPosition(
   mousePositionPercentage: THREE.Vector2,
   scrollPercentage: number,
   mouseOrbitRatio: number,
+  aspectRatio: number,
 ): THREE.Vector3 {
-  const [distance, horizontalAngle, verticalAngle] = getOrbitalParameters(mousePositionPercentage, scrollPercentage, mouseOrbitRatio)
+  const [distance, horizontalAngle, verticalAngle] = getOrbitalParameters(mousePositionPercentage, scrollPercentage, mouseOrbitRatio, aspectRatio)
 
   return _cameraPosition.set(
     Math.sin(horizontalAngle) * Math.cos(verticalAngle) * distance,
@@ -102,7 +110,7 @@ export function getCameraOrbitPositionSmooth(
   mouseOrbitRatio: number,
   cameraPositionSpeed: number,
 ): THREE.Vector3 {
-  const [targetDistance, targetHorizontalAngle, targetVerticalAngle] = getOrbitalParameters(mousePositionPercentage, scrollPercentage, mouseOrbitRatio)
+  const [targetDistance, targetHorizontalAngle, targetVerticalAngle] = getOrbitalParameters(mousePositionPercentage, scrollPercentage, mouseOrbitRatio, camera.aspect)
 
   // Get current orbital parameters from camera position
   const currentDistance = camera.position.length()

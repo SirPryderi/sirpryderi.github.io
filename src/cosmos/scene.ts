@@ -64,7 +64,7 @@ const geometry = createAdaptiveGeometry()
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
-camera.position.copy(getCameraOrbitPosition(mousePositionPercentage, scrollPercentage, mouseOrbitRatio))
+camera.position.copy(getCameraOrbitPosition(mousePositionPercentage, scrollPercentage, mouseOrbitRatio, camera.aspect))
 camera.quaternion.copy(getCameraRotationQuat(camera, mesh, scrollPercentage))
 
 function getViewportSize() {
