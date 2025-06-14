@@ -199,13 +199,13 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
       <Slide id="projects">
         <h2>Projects</h2>
         <ProjectsGrid>
-          {data.projects.nodes.map(({ frontmatter }) => (
+          {data.projects.nodes.map(({ fields, frontmatter }) => (
             <ProjectCard
-              key={frontmatter!.slug}
-              to={`/projects/${frontmatter!.slug}`}
+              key={fields!.slug}
+              to={`/projects/${fields!.slug}`}
             >
               <h3>{frontmatter!.name}</h3>
-              <pre>{`> /projects/${frontmatter!.slug}`}</pre>
+              <pre>{`> /projects/${fields!.slug}`}</pre>
             </ProjectCard>
           ))}
         </ProjectsGrid>
@@ -214,13 +214,13 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
       <Slide id="games">
         <h2>Games</h2>
         <ProjectsGrid>
-          {data.games.nodes.map(({ frontmatter }) => (
+          {data.games.nodes.map(({ fields, frontmatter }) => (
             <ProjectCard
-              key={frontmatter!.slug}
-              to={`/games/${frontmatter!.slug}`}
+              key={fields!.slug}
+              to={`/games/${fields!.slug}`}
             >
               <h3>{frontmatter!.name}</h3>
-              <pre>{`> /games/${frontmatter!.slug}`}</pre>
+              <pre>{`> /games/${fields!.slug}`}</pre>
             </ProjectCard>
           ))}
         </ProjectsGrid>
@@ -266,23 +266,17 @@ export const pageQuery = graphql`
     excerpt
     frontmatter {
       name
-      slug
       priority
+    }
+    fields {
+      slug
     }
   }
 
   query HomePage {
     projects: allMdx(
-      filter: {
-        internal: {
-          type: { eq: "Mdx" }
-          contentFilePath: { regex: "/content/project/" }
-        }
-      }
-      sort: [
-        { frontmatter: { priority: ASC } }
-        { frontmatter: { name: ASC } }
-      ]
+      filter: { fields: { type: { eq: "projects" } } }
+      sort: [{ frontmatter: { priority: ASC } }, { frontmatter: { name: ASC } }]
     ) {
       nodes {
         ...MdxFields
@@ -290,16 +284,8 @@ export const pageQuery = graphql`
     }
 
     games: allMdx(
-      filter: {
-        internal: {
-          type: { eq: "Mdx" }
-          contentFilePath: { regex: "/content/games/" }
-        }
-      }
-      sort: [
-        { frontmatter: { priority: ASC } }
-        { frontmatter: { name: ASC } }
-      ]
+      filter: { fields: { type: { eq: "games" } } }
+      sort: [{ frontmatter: { priority: ASC } }, { frontmatter: { name: ASC } }]
     ) {
       nodes {
         ...MdxFields

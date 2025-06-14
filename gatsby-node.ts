@@ -1,5 +1,4 @@
 import { CreateNodeArgs, CreatePagesArgs } from "gatsby"
-import { createFilePath } from "gatsby-source-filesystem"
 import path from "path"
 
 
@@ -7,15 +6,13 @@ export const onCreateNode = ({ node, actions, getNode }: CreateNodeArgs) => {
   const { createNodeField } = actions
 
   if (node.internal.type === "Mdx") {
-    const value = createFilePath({ node, getNode })
 
     const parent = getNode(node.parent!)
 
     const bucket: string | undefined = parent ? parent["relativeDirectory"] as string : undefined
+    const slug: string | undefined = parent ? parent["name"] as string : undefined
 
-    if (!bucket) return
-
-    createNodeField({ name: "slug", node, value: `${value}` })
+    createNodeField({ name: "slug", node, value: `${slug}` })
     createNodeField({ name: "type", node, value: `${bucket}` })
   }
 }
@@ -30,14 +27,12 @@ export const createPages = async ({ graphql, actions }: CreatePagesArgs) => {
     allMdx {
       nodes {
         id
-        frontmatter {
-          slug
-        }
         internal {
           contentFilePath
         }
         fields {
           type
+          slug
         }
       }
     }
@@ -45,14 +40,14 @@ export const createPages = async ({ graphql, actions }: CreatePagesArgs) => {
 `)
 
   result.data?.allMdx.nodes.forEach((node) => {
-    if (!node.frontmatter) return
+    if (!node.fields?.slug) return
 
     const type = node.fields?.type
 
     if (!type || type === "posts") return
 
     createPage({
-      path: `${type}/${node.frontmatter.slug}`,
+      path: `${type}/${node.fields.slug}`,
       component: `${projectTemplate}?__contentFilePath=${node.internal.contentFilePath}`,
       ownerNodeId: node.id,
       context: {

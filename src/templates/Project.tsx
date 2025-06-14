@@ -8,20 +8,25 @@ import LayoutHead from "../components/LayoutHead"
 type Props = PageProps<Queries.AnyContentByIdQuery>
 
 export default function GameTemplate({ data, children, location }: Props) {
-  const frontmatter = data.mdx?.frontmatter
-  const type = data.mdx?.fields?.type || "UNKNOWN"
+  const document = data.mdx
+
+  if (!document) return
+
+  const slug = document.fields?.slug!
+  const title = document.frontmatter?.name || "UNTITLED"
+  const type = document.fields?.type || "UNCATEGORISED"
 
   const breadcrumbItems = [
     { title: "home", url: "/" },
     { title: type, url: `/#${type}` },
-    { title: frontmatter?.slug || type, url: location.pathname },
+    { title: slug || "untitled", url: location.pathname },
   ]
 
   return (
     <Layout>
       <Article>
         <Breadcrumbs items={breadcrumbItems} />
-        <ArticleTitle>{frontmatter?.name}</ArticleTitle>
+        <ArticleTitle>{title}</ArticleTitle>
         <ArticleMdx>{children}</ArticleMdx>
       </Article>
     </Layout>
@@ -29,17 +34,17 @@ export default function GameTemplate({ data, children, location }: Props) {
 }
 
 export const pageQuery = graphql`
-  query AnyContentById($id: String) {
+  query AnyContentById($id: String!) {
     mdx(id: { eq: $id }) {
       id
       body
       frontmatter {
-        slug
         name
         priority
       }
       fields {
         type
+        slug
       }
     }
   }
