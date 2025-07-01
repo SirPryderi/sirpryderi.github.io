@@ -136,7 +136,7 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
             <span className="name">Vittorio</span>{" "}
             <span className="surname">Iocolano</span>
           </h1>
-          <Button href="mailto:pryderi.mail@gmail.com">Hire Me</Button>
+          <Button to="/meeting/">Hire Me</Button>
         </Title>
         {/* ▿ */}
       </Slide>
@@ -181,10 +181,7 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
         <h2>Projects</h2>
         <ProjectsGrid>
           {data.projects.nodes.map(({ fields, frontmatter }) => (
-            <ProjectCard
-              key={fields!.slug}
-              to={`/projects/${fields!.slug}`}
-            >
+            <ProjectCard key={fields!.slug} to={`/projects/${fields!.slug}`}>
               <h3>{frontmatter!.name}</h3>
               <pre>{`> /projects/${fields!.slug}`}</pre>
             </ProjectCard>
@@ -196,10 +193,7 @@ const IndexPage: React.FC<PageProps<Queries.HomePageQuery>> = ({ data }) => {
         <h2>Games</h2>
         <ProjectsGrid>
           {data.games.nodes.map(({ fields, frontmatter }) => (
-            <ProjectCard
-              key={fields!.slug}
-              to={`/games/${fields!.slug}`}
-            >
+            <ProjectCard key={fields!.slug} to={`/games/${fields!.slug}`}>
               <h3>{frontmatter!.name}</h3>
               <pre>{`> /games/${fields!.slug}`}</pre>
             </ProjectCard>
