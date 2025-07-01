@@ -3,6 +3,7 @@ import { graphql, Link, type PageProps } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"
 import LayoutHead from "../components/LayoutHead"
+import Slide from "../components/Slide"
 import Button from "../components/Button"
 import { StaticImage } from "gatsby-plugin-image"
 import HobbyList from "../components/HobbyList"
@@ -15,26 +16,6 @@ import {
 } from "@fortawesome/free-brands-svg-icons"
 import About from "../../content/about.mdx"
 
-const Slide = styled.section<{ $fullSize?: boolean }>`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  max-width: 1840px;
-  padding: 40px 200px;
-  margin: 0 auto;
-  justify-content: center;
-  min-height: ${(props) => (props.$fullSize ? "100vh" : "auto")};
-
-  // responsive breakpoints
-  @media (max-width: 768px) {
-    padding: 40px 20px;
-  }
-
-  h2 {
-    font-size: 4rem;
-    margin: 0;
-  }
-`
 
 const Title = styled.div`
   display: flex;
