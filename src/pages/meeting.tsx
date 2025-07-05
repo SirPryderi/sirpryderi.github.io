@@ -16,7 +16,7 @@ const breadcrumbItems = [
 const MeetingPage: React.FC<PageProps<null>> = ({}) => {
   return (
     <Layout>
-      <Slide>
+      <Slide $fullSize>
         <div>
           <Breadcrumbs items={breadcrumbItems} />
           <ArticleTitle>Let's chat</ArticleTitle>

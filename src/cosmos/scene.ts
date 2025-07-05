@@ -7,7 +7,7 @@ const cameraRotationSpeed = 0.1
 
 let [_viewportWidth, _viewportHeight] = getViewportSize()
 
-let scrollPercentage = window.scrollY / (document.body.scrollHeight - _viewportHeight)
+let scrollPercentage = window.scrollY / (document.body.scrollHeight - _viewportHeight) || 0
 const mousePositionPercentage = new THREE.Vector2(.5, .5)
 
 const scene = new THREE.Scene()
@@ -136,7 +136,7 @@ function onMouseMove(event: MouseEvent) {
 
 window.addEventListener('scroll', onScroll, false)
 function onScroll() {
-  scrollPercentage = window.scrollY / (document.body.scrollHeight - _viewportHeight)
+  scrollPercentage = window.scrollY / (document.body.scrollHeight - _viewportHeight) || 0
 }
 
 addStarsToSky()
