@@ -51,8 +51,6 @@ const LayoutHead: HeadFC<Queries.Mdx, PageContext> = ({
       <meta property="og:type" content={seo.type} />
       <meta property="og:url" content={seo.url} />
       {seo.image && <meta property="og:image" content={seo.image} />}
-
-      <style>{`body { margin: 0; background-color: #0a0e0c; }`}</style>
     </>
   )
 }
