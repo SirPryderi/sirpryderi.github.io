@@ -1,8 +1,6 @@
-import React from "react"
 import styled from "styled-components"
 
 const Slide = styled.section<{ $fullSize?: boolean }>`
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   max-width: 1840px;

@@ -22,7 +22,6 @@ const Title = styled.div`
   flex-flow: column;
 
   @media (max-width: 768px) {
-    box-sizing: border-box;
     justify-self: flex-start;
     min-height: calc(100vh - 80px);
     padding: 20px;
@@ -70,7 +69,6 @@ const ProjectsGrid = styled.div`
 `
 
 const ProjectCard = styled(Link)`
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   background-color: #0a0e0c;

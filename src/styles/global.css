@@ -8,3 +8,7 @@ body,
 body {
   background-color: #0a0e0c;
 }
+
+* {
+  box-sizing: border-box;
+}

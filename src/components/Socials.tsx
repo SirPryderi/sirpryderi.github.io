@@ -12,7 +12,6 @@ const SocialsRow = styled.div`
 `
 
 const SocialLink = styled.a`
-  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   color: #fff;
