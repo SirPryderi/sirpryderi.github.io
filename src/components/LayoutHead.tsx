@@ -33,7 +33,6 @@ const LayoutHead: HeadFC<Queries.Mdx, PageContext> = ({
       <title>{seo.title}</title>
 
       <meta name="color-scheme" content="dark" />
-      <meta name="theme-color" content="#0a0e0c" />
       <meta name="description" content={seo.description} />
       <meta name="author" content={seo.author} />
       <link rel="canonical" href={seo.url} />

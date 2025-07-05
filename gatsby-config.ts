@@ -1,12 +1,15 @@
 import type { GatsbyConfig } from "gatsby"
 
+const title = `Vittorio Iocolano's Website`;
+const description = `Vittorio Iocolano's personal website, containing biography and portfolio`;
+
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `Vittorio Iocolano's Website`,
+    title,
     author: `Vittorio Iocolano`,
     username: `SirPryderi`,
     siteUrl: `https://sirpryderi.github.io`,
-    description: `Vittorio Iocolano's personal website, containing biography and portfolio`,
+    description,
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
   // If you use VSCode you can also use the GraphQL plugin
@@ -38,7 +41,14 @@ const config: GatsbyConfig = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        "icon": "src/images/icon.png"
+        icon: "src/images/icon.svg",
+        name: title,
+        description,
+        short_name: title,
+        start_url: `/`,
+        background_color: `#0a0e0c`,
+        theme_color: `#0a0e0c`,
+        display: `standalone`,
       }
     },
     "gatsby-plugin-mdx",
