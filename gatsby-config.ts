@@ -1,7 +1,7 @@
 import type { GatsbyConfig } from "gatsby"
 
-const title = `Vittorio Iocolano's Website`;
-const description = `Vittorio Iocolano's personal website, containing biography and portfolio`;
+const title = `Vittorio Iocolano's Website`
+const description = `Vittorio Iocolano's personal website, containing biography and portfolio`
 
 const config: GatsbyConfig = {
   siteMetadata: {
@@ -41,7 +41,6 @@ const config: GatsbyConfig = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        icon: "src/images/icon.svg",
         name: title,
         description,
         short_name: title,
@@ -49,6 +48,10 @@ const config: GatsbyConfig = {
         background_color: `#0a0e0c`,
         theme_color: `#0a0e0c`,
         display: `standalone`,
+        icon: "src/images/icon.svg",
+        icon_options: {
+          purpose: `any maskable`,
+        },
       }
     },
     "gatsby-plugin-mdx",
