@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sirpryderi.github.io/sitemap-index.xml
+Sitemap: https://sirpryderi.github.io/perfbored/sitemap.xml
